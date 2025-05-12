@@ -47,17 +47,12 @@ namespace PradOpExample
                             matrix[j, k] = data[j][k];
                         }
                     }
-                    var layer = net.GetModelLayer();
-                    if (layer != null)
-                    {
-                        //var angles = layer.WeightMatrix("SummationWeights");
-                        //angles[0, 0] += 0.001d;
-                    }
 
                     i++;
 
                     double targetAngle = sub == "A" ? Math.PI / 4d : ((Math.PI / 2) + (Math.PI / 4));
                     double oppositeAngle = sub == "A" ? ((Math.PI / 2) + (Math.PI / 4)) : Math.PI / 4d;
+
                     var res = net.Forward(matrix, targetAngle, oppositeAngle);
                     var gradient = res.Item1;
                     var output = res.Item2;
@@ -85,12 +80,9 @@ namespace PradOpExample
                     Console.WriteLine($"Average Result Angle A: {sumResultAngleA / (numResultAngleA + 1E-9)}");
                     Console.WriteLine($"Average Result Angle B: {sumResultAngleB / (numResultAngleB + 1E-9)}");
 
-                    //if (Math.Abs(loss[0][0]) >= 200d)
-                    //{
                     Console.WriteLine($"Average loss: {avgloss}");
                     // await net.Backward(gradient);
                     // net.ApplyGradients();
-                    //}
 
                     await net.Reset();
                     Thread.Sleep(1000);
@@ -105,10 +97,6 @@ namespace PradOpExample
                         // net.SaveWeights();
                     }
 
-                    //if (token.UsageCount == 0)
-                    //{
-                    //    token.Repeat(2);
-                    //}
                 });
             }
             catch (Exception ex)
